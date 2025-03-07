@@ -8,9 +8,60 @@ Students write the entire documentation with sections, sub-sections, diagrams, e
 
 \subsection{Research Phase}
 \label{subsec:research}
+In the research phase, there are two selections I'm going to make: the dataset selection and the model selection.
+
+With regards to the dataset of this language translation task,
+the basic requirement is that it should come with at least 1,000 pairs of German-French translations.
+So the selected dataset should include german and french languages, at least 1,000 rows and preferably be used for translation tasks.
+I applied these 3 filters to huggingface datasets and it gave me 88 datasets. 
+I went through some of them and tried to get to know
+1)how the data format looks like; 
+2)what the dataset originally is used for;
+3)how the translation quality is. 
+
+First, the dataset must be a translation between German and French.
+The google/wmt24pp dataset is a translation between German and English, and French and English,
+so I excluded this type of data and focused on finding a dataset of translation between German and French.
+This can filter out many datasets, and finally 
+I focused on the Helsinki-NLP/opus-100 dataset, 
+the Helsinki-NLP/opus\_books dataset, and the Helsinki-NLP/europarl dataset.
+
+Second, this task does not limit translations to specific fields.
+The Helsinki-NLP/opus-100 dataset is an English-centered multilingual corpus.
+All training pairs contain English on the source or target side,
+and the official does not specify a specific field.
+The Helsinki-NLP/opus\_books dataset is taken from
+a collection of copyright free books aligned by Andras Farkas.
+The Helsinki-NLP/europarl dataset comes from the European Parliament, 
+and the content mainly involves law and politics. 
+Because the task is not limited, it makes me a little entangled.
+So, I decided to refer to the third point and randomly check the quality of the data.
+
+Third, after comparison,
+I found that the Helsinki-NLP/opus\_books dataset contains strange semantic translations, 
+such as one data "de": "Den ich wandern muß, arms Waisenkind! Weshalb sandten sie mich so weit, so weit," 
+"fr": "«Pourquoi m'ont-ils envoyé si seul et si loin, là où s'étendent les marécages, 
+là où sont amoncelés les sombres rochers?" 
+Even if I used Google Translate, I couldn't understand it, 
+which would inevitably affect fine-tuning, 
+and the dataset is biased towards the storyline, 
+which I don't think is suitable for this fine-tuning, 
+so I excluded the Helsinki-NLP/opus\_books dataset.
+Most of the data in Helsinki-NLP/opus-100 are short,
+while the data in Helsinki-NLP/europarl are mostly long sentences. 
+Considering the performance of Colab T4 GPU, the short data in Helsinki-NLP/opus-100 is more suitable. 
+In addition, the content of the Helsinki-NLP/europarl dataset focuses on parliament 
+and is more inclined towards politics and law. 
+Helsinki-NLP/opus-100 is more suitable for the translation of general content. 
+So I finally decided to use Helsinki-NLP/opus-100.
 
 \subsection{Design Phase}
 \label{subsec:design}
+With respective to the approach of fine-tuning, I chose the 
+
+With respective to the split ratio between the training dataset and testing dataset, I chose 
 
 \subsection{Implementation Phase}
 \label{subsec:implementation}
+
+https://stackoverflow.com/questions/69609401/suppress-huggingface-logging-warning-setting-pad-token-id-to-eos-token-id
