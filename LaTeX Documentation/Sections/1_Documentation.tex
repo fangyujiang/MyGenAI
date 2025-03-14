@@ -2,9 +2,9 @@
 \section{Portfolio documentation}
 \label{sec:documentation}
 
-Compile a comprehensive documentation of your project, including all the project phases. You will need to explain every choice you made during the project and your thoughts about the results you get. You will introduce the results in suitable visualisation. Furthermore, you will need to explain which criteria you follow to build your prompts and how they affect the results. 
+% Compile a comprehensive documentation of your project, including all the project phases. You will need to explain every choice you made during the project and your thoughts about the results you get. You will introduce the results in suitable visualisation. Furthermore, you will need to explain which criteria you follow to build your prompts and how they affect the results. 
 
-Students write the entire documentation with sections, sub-sections, diagrams, etc in this section. Please write as comprehensively as possible. Head to the document 1\_documentation.tex. You are free to use as many subsections as required. We will not provide a template for documentation. 
+% Students write the entire documentation with sections, sub-sections, diagrams, etc in this section. Please write as comprehensively as possible. Head to the document 1\_documentation.tex. You are free to use as many subsections as required. We will not provide a template for documentation. 
 
 \subsection{Research Phase}
 \label{subsec:research}
@@ -189,23 +189,49 @@ while the ordinary version of llama does not support it, which makes me a little
 Unfortunately, I don't have time to study it in detail.
 
 3. Evaluate [Model A] on the test dataset [Dataset A: Test] using the chosen metric.
+As mentioned in the design phase, I directly used BLEU from the evaluate library, 
+which is one of the most commonly used metrics in the field of machine translation.
+But I took a look at some other language models 
+when I was huggingface and found that the BLEU scores of the best ones could reach more than 30. 
+The [Model A] and [Dataset A] I chose at this stage of research were only 13, so I was a little unsure.
+I was curious about what other excellent language models did right to get such high scores, 
+and I took the next step with this curiosity.
 
 4. Fine-tune [Model A] on the training dataset [Dataset A: Train] to create [Model B].
+In this step, this is the first fine\-tuning, because I have only heard of fine\-tuning in class, 
+but I have never really done it. This time is the first time to practice. I read the document about LoRA on huggingface.
+I learned that r is the Low Rank Dimension that determines the number of parameters of the modified model, 
+and alpha is the scaling factor. I chose the conventional 1:2 ratio. After adjusting r to 2, 4, and 8, according to experience, 
+r=8 has the best effect at present. At the same time, target\_modules depends on the Attention layer of the model being fine\-tuned. 
+According to experience, q, k, v, and o all participate in the best effect. 
+At the same time, it is more critical that 800 pairs of training data are very small for a model with 1B parameters. 
+In order to prevent overfitting, I deliberately increased the dropout to 0.2. In the end, according to experience, 
+0.2 has the best effect. At the beginning, I set the learning rate to a relatively large level, as high as 1e-3, 
+but the fine\-tuned model is not as good as before fine-tuning. So I deliberately adjusted it to a relatively small level, 
+5e-5, to prevent excessive damage to the original ability of the model.
 
 5. Evaluate [Model B] on the test dataset [Dataset A: Test] using the chosen metric.
+Because of the training of 800 training data, the BLEU score increased from 13.663278694716134 to 14.00744743895432.
 
 6. Use the designed prompt to generate a new synthesized dataset [Dataset B],
 twice the size of the training set [Dataset A: Train], using the selected larger model.
+See Prompt for Querying A Large Model.
 
 7. Fine-tune [Model A] on the synthesized dataset [Dataset B] to create [Model C].
+The idea of fine\-tuning is the same as that of step 4, but due to time constraints, 
+the training could not be completed completely, but the BLEU results still improved.
 
 8. Evaluate [Model C] on the test dataset [Dataset A: Test] using the chosen metric.
+Because of the increase in data volume, BLEU has increased.
 
 9. Combine [Dataset A: Train] and [Dataset B], shuffle them with suitable seeds, and create [Dataset C].
 
 10. Fine-tune [Model A] on the combined dataset [Dataset C] to create [Model D].
+The idea of fine\-tuning is the same as that of step 4, but due to time constraints, 
+the training could not be completed completely, but the BLEU results still improved.
 
 11. Evaluate [Model D] on the test dataset [Dataset A: Test] using the chosen metric.
+Because of the increase in data volume, BLEU has increased.
 
 12. Plot the performance of all models using appropriate visualizations.
 
