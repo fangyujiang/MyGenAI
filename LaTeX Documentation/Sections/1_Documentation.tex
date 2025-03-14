@@ -75,13 +75,7 @@ the 1B model requires at least 4GB VRAM, and may be more during training.
 It is suitable for inference and lightweight fine-tuning on Colab.
 3B may require more than 16GB VRAM during training, 
 and requires additional optimization when training on Colab, and it may not be enough. 
-So I decided to use Llama 3.2 1B to try the generated translation effect first. 
-If higher generation quality is needed, then try version 3B and combine it with quantization techniques.
-
-In the subsequent implementation, 
-I found that meta-llama/Llama-3.2-1B is not as good as meta-llama/Llama-3.2-1B-Instruct 
-in understanding the translation instructions, 
-so I changed [Model A] to meta-llama/Llama-3.2-1B-Instruct.
+So I decided to use Llama 3.2 1B to try the generated translation effect first.
 
 \subsection{Design Phase}
 \label{subsec:design}
